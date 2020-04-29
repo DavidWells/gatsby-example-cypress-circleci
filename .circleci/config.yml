@@ -1,19 +1,13 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-executors:
-  with-chrome:
-    docker:
-      - image: cypress/browsers:chrome69
-
+# Use a package of configuration called an orb.
 orbs:
-  cypress: cypress-io/cypress@1.9.0
-
+  # Declare a dependency on the welcome-orb
+  welcome: circleci/welcome-orb@0.4.1
+# Orchestrate or schedule a set of jobs
 workflows:
-  build:
+  # Name the workflow "welcome"
+  welcome:
+    # Run the welcome/run job in its own container
     jobs:
-      - cypress/run:
-          yarn: true
-          cache-key: 'yarn-packages-{{ arch }}-{{ checksum "yarn.lock" }}'
-          record: true
-          start: npm start
-          wait-on: 'http://localhost:8000'
+      - welcome/run
